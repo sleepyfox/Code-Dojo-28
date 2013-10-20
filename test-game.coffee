@@ -8,6 +8,9 @@ INVALID_BOARD_ERROR = "Invalid board"
 count_white = (position_string) ->
 	position_string.split('').filter((a) -> a is WHITE).length
 
+count_black = (position_string) ->
+	position_string.split('').filter((a) -> a is BLACK).length
+
 valid_board = (position_string) ->
 	position_string.match(/[\-WB]{9}/) isnt null
 
@@ -82,7 +85,7 @@ describe 'A board with two white stones', ->
 		(-> board = new Board 'WW-------').should.throw INVALID_BOARD_ERROR
 
 describe 'A white stone counter', ->
-	it 'should count an ampty string as no white stones', ->
+	it 'should count an empty string as no white stones', ->
 		count_white('').should.equal 0
 	it 'should count "W" as one white stone', ->
 		count_white('W').should.equal 1
@@ -92,6 +95,18 @@ describe 'A white stone counter', ->
 		count_white('WBW').should.equal 2
 	it 'should count "-BWosudW" as two white stones', ->
 		count_white('-BWosudW').should.equal 2
+
+describe 'A black stone counter', ->
+	it 'should count an empty string as no black stones', ->
+		count_black('').should.equal 0
+	it 'should count "B" as one black stone', ->
+		count_black('B').should.equal 1
+	it 'should count "W" as no black stones', ->
+		count_black('W').should.equal 0
+	it 'should count "BWB" as two black stones', ->
+		count_black('BWB').should.equal 2
+	it 'should count "-BWosudB" as two black stones', ->
+		count_black('-BWosudB').should.equal 2
 		
 
 
