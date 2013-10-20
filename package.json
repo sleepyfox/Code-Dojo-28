@@ -1,0 +1,15 @@
+{
+  "name": "28-three-mens-morris",
+  "version": "0.0.1",
+  "description": "A code kata example based upon the game Three Men's Morris",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --compilers coffee:coffee-script -R spec test-*.coffee"
+  },
+  "author": "@sleepyfox",
+  "license": "see LICENSE file",
+  "dependencies": {
+    "mocha": "~1.13.0",
+    "chai": "~1.8.0"
+  }
+}
