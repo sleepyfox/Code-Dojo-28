@@ -5,14 +5,11 @@ WHITE = 'W'
 BLACK = 'B'
 INVALID_BOARD_ERROR = "Invalid board"
 
-count_white = (position_string) ->
-	position_string.split('').filter((a) -> a is WHITE).length
-
-count_black = (position_string) ->
-	position_string.split('').filter((a) -> a is BLACK).length
+count_stones = (position_string, colour) ->
+	position_string.split('').filter((a) -> a is colour).length
 
 valid_board = (position_string) ->
-	position_string.match(/[\-WB]{9}/) isnt null
+	position_string.match(/[\-WB]{9}/) isnt null 
 
 class Board
 	constructor: (position_string) ->
@@ -86,27 +83,27 @@ describe 'A board with two white stones', ->
 
 describe 'A white stone counter', ->
 	it 'should count an empty string as no white stones', ->
-		count_white('').should.equal 0
+		count_stones('', WHITE).should.equal 0
 	it 'should count "W" as one white stone', ->
-		count_white('W').should.equal 1
+		count_stones('W', WHITE).should.equal 1
 	it 'should count "B" as no white stones', ->
-		count_white('B').should.equal 0
+		count_stones('B', WHITE).should.equal 0
 	it 'should count "WBW" as two white stones', ->
-		count_white('WBW').should.equal 2
+		count_stones('WBW', WHITE).should.equal 2
 	it 'should count "-BWosudW" as two white stones', ->
-		count_white('-BWosudW').should.equal 2
+		count_stones('-BWosudW', WHITE).should.equal 2
 
 describe 'A black stone counter', ->
 	it 'should count an empty string as no black stones', ->
-		count_black('').should.equal 0
+		count_stones('', BLACK).should.equal 0
 	it 'should count "B" as one black stone', ->
-		count_black('B').should.equal 1
+		count_stones('B', BLACK).should.equal 1
 	it 'should count "W" as no black stones', ->
-		count_black('W').should.equal 0
+		count_stones('W', BLACK).should.equal 0
 	it 'should count "BWB" as two black stones', ->
-		count_black('BWB').should.equal 2
+		count_stones('BWB', BLACK).should.equal 2
 	it 'should count "-BWosudB" as two black stones', ->
-		count_black('-BWosudB').should.equal 2
+		count_stones('-BWosudB', BLACK).should.equal 2
 		
 
 
