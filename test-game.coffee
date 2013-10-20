@@ -9,7 +9,10 @@ count_stones = (position_string, colour) ->
 	position_string.split('').filter((a) -> a is colour).length
 
 valid_board = (position_string) ->
-	position_string.match(/[\-WB]{9}/) isnt null 
+	white_stones = count_stones(position_string, WHITE)
+	black_stones = count_stones(position_string, BLACK)
+	(position_string.match(/[\-WB]{9}/) isnt null) and (
+		(white_stones is black_stones) or (white_stones is black_stones + 1))
 
 class Board
 	constructor: (position_string) ->
@@ -38,7 +41,16 @@ describe 'A board validator', ->
 	it 'should reject boards that contain other than W, B and -', ->
 		valid_board('lsalsalsa').should.be.false 
 	it 'should accept a valid empty board', ->
-		valid_board(EMPTY_BOARD).should.be.true		
+		valid_board(EMPTY_BOARD).should.be.true
+	it 'should reject a board that has too many white stones', ->
+		valid_board('WW-------').should.be.false
+		valid_board('----W-W-W').should.be.false
+	it 'should reject a board with too many black stones', ->
+		valid_board('B--------').should.be.false
+		valid_board('WBWBWBB--').should.be.false
+	it 'should accept a board with equal numbers of white and black stones', ->
+		valid_board('WBWBWBWB-').should.be.true
+		valid_board('WWWBBB---').should.be.true
 
 describe 'A board when initialised', ->
 	it 'should accept a starting position of only nine characters', ->
@@ -78,7 +90,7 @@ describe 'A board with one white stone', ->
 		board.play(1, WHITE).should.be.false
 
 describe 'A board with two white stones', ->
-	xit 'should not be valid', ->
+	it 'should not be valid', ->
 		(-> board = new Board 'WW-------').should.throw INVALID_BOARD_ERROR
 
 describe 'A white stone counter', ->
