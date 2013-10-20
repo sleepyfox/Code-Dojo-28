@@ -3,10 +3,14 @@ should = require('chai').should()
 EMPTY_BOARD = '---------'
 WHITE = 'W'
 BLACK = 'B'
+INVALID_BOARD_ERROR = "Invalid board"
+
+count_white = (position_string) ->
+	position_string.split('').filter((a) -> a is WHITE).length
 
 valid_board = (position_string) ->
 	position_string.match(/[\-WB]{9}/) isnt null
-	
+
 class Board
 	constructor: (position_string) ->
 		if valid_board(position_string)
@@ -14,7 +18,7 @@ class Board
 			@turn = 1
 			@turn++ for i in @board_positions when i is WHITE or i is BLACK
 		else 
-			throw new Error "Invalid board"
+			throw new Error INVALID_BOARD_ERROR
 	play: (position, player) -> 
 		if 0 < position < 10 
 			if player is WHITE and @turn % 2 is 1
@@ -41,10 +45,9 @@ describe 'A board when initialised', ->
 		board = new Board EMPTY_BOARD
 		board.turn.should.equal 1
 	it 'should not accept a starting position of fewer than nine chars', ->
-		(-> board = new Board 'ghghgh').should.throw "Invalid board"
+		(-> board = new Board 'ghghgh').should.throw INVALID_BOARD_ERROR
 	it 'should not accept a starting position of more than nine chars', ->
-		(-> board = new Board 'kjdshfkdsjhfss').should.throw "Invalid board"
-
+		(-> board = new Board 'kjdshfkdsjhfss').should.throw INVALID_BOARD_ERROR
 
 describe 'An empty board', ->
 	it 'should have no winner', ->
@@ -73,4 +76,22 @@ describe 'A board with one white stone', ->
 		board = new Board "-W-------"
 		board.play(5, WHITE).should.be.false
 		board.play(1, WHITE).should.be.false
+
+describe 'A board with two white stones', ->
+	xit 'should not be valid', ->
+		(-> board = new Board 'WW-------').should.throw INVALID_BOARD_ERROR
+
+describe 'A white stone counter', ->
+	it 'should count an ampty string as no white stones', ->
+		count_white('').should.equal 0
+	it 'should count "W" as one white stone', ->
+		count_white('W').should.equal 1
+	it 'should count "B" as no white stones', ->
+		count_white('B').should.equal 0
+	it 'should count "WBW" as two white stones', ->
+		count_white('WBW').should.equal 2
+	it 'should count "-BWosudW" as two white stones', ->
+		count_white('-BWosudW').should.equal 2
+		
+
 
