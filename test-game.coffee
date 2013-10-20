@@ -4,14 +4,17 @@ EMPTY_BOARD = '---------'
 WHITE = 'W'
 BLACK = 'B'
 
+valid_board = (position_string) ->
+	position_string.match(/[\-WB]{9}/) isnt null
+	
 class Board
 	constructor: (position_string) ->
-		@_valid = false
-		if position_string.length is 9
-			@_valid = true
+		if valid_board(position_string)
 			@board_positions = position_string.split ''
 			@turn = 1
 			@turn++ for i in @board_positions when i is WHITE or i is BLACK
+		else 
+			throw new Error "Invalid board"
 	play: (position, player) -> 
 		if 0 < position < 10 
 			if player is WHITE and @turn % 2 is 1
@@ -20,20 +23,28 @@ class Board
 				return true
 		false
 	win: -> false
-	is_valid: -> @_valid
 
+describe 'A board validator', ->
+	it 'should reject boards with fewer than 9 positions', ->
+		valid_board('').should.be.false
+		valid_board('gjgjgj').should.be.false
+	it 'should reject boards with more than 9 positions', ->
+		valid_board('1234567890').should.be.false
+		valid_board('kjsfhgkfdhgkhfdgkfdhkghfdkgkjdhfg').should.be.false
+	it 'should reject boards that contain other than W, B and -', ->
+		valid_board('lsalsalsa').should.be.false 
+	it 'should accept a valid empty board', ->
+		valid_board(EMPTY_BOARD).should.be.true		
 
 describe 'A board when initialised', ->
 	it 'should accept a starting position of only nine characters', ->
 		board = new Board EMPTY_BOARD
 		board.turn.should.equal 1
-		board.is_valid().should.be.true
 	it 'should not accept a starting position of fewer than nine chars', ->
-		board = new Board 'ghghgh'
-		board.is_valid().should.be.false
+		(-> board = new Board 'ghghgh').should.throw "Invalid board"
 	it 'should not accept a starting position of more than nine chars', ->
-		board = new Board 'kjdshfkdsjhfss'
-		board.is_valid().should.be.false
+		(-> board = new Board 'kjdshfkdsjhfss').should.throw "Invalid board"
+
 
 describe 'An empty board', ->
 	it 'should have no winner', ->
