@@ -9,6 +9,7 @@
   "author": "@sleepyfox",
   "license": "see LICENSE file",
   "dependencies": {
+    "coffee-script": "~1.6.3",
     "mocha": "~1.13.0",
     "chai": "~1.8.0"
   }
