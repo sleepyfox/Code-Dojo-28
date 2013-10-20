@@ -30,6 +30,8 @@ class Board
 				return true
 		false
 	win: -> false
+	isEmpty: (n) ->
+		@board_positions[n-1] is '-'
 
 describe 'A board validator', ->
 	it 'should reject boards with fewer than 9 positions', ->
@@ -88,10 +90,23 @@ describe 'A board with one white stone', ->
 		board = new Board "-W-------"
 		board.play(5, WHITE).should.be.false
 		board.play(1, WHITE).should.be.false
+	it 'should allow black to play next in position 1', ->
+		board = new Board "-W-------"
+		board.play(1, BLACK).should.be.true
+	it 'should show position one to be empty', ->
+		board = new Board "-W-------"
+		board.isEmpty(1).should.be.true
+	it 'should show position two not to be empty', ->
+		board = new Board "-W-------"
+		board.isEmpty(2).should.be.false		
 
 describe 'A board with two white stones', ->
 	it 'should not be valid', ->
 		(-> board = new Board 'WW-------').should.throw INVALID_BOARD_ERROR
+
+describe 'A board with two black stones', ->
+	it 'should not be valid', ->
+		(-> board = new Board 'BB-------').should.throw INVALID_BOARD_ERROR
 
 describe 'A white stone counter', ->
 	it 'should count an empty string as no white stones', ->
