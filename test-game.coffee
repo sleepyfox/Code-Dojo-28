@@ -56,6 +56,15 @@ class Move
 		if @future_pos < 1 or @future_pos > 9
 			throw new Error "Invalid location"
 
+board_init = (moves) ->
+	b = new Board
+	player_list = [BLACK, WHITE]
+	for i in [1..moves.length]
+		move = moves[i - 1]
+		player = player_list[i % 2]
+		b.play(player, null, move)
+	b
+
 describe 'A move', ->
 	describe 'has a player which', ->
 		it 'should be black or white', ->
@@ -74,16 +83,7 @@ describe 'A move', ->
 		it 'should not allow a future location greater than 9', ->
 			(-> new Move(WHITE, null, 10)).should.throw "Invalid location"
 
-
 describe 'A board initialiser', ->
-	board_init = (moves) ->
-		b = new Board
-		player_list = [BLACK, WHITE]
-		for i in [1..moves.length]
-			move = moves[i - 1]
-			player = player_list[i % 2]
-			b.play(player, null, move)
-		b
 	it 'should when given an empty array return an empty board', ->
 		board = board_init([])
 		board.turn.should.equal 1
@@ -97,7 +97,6 @@ describe 'A board initialiser', ->
 		board.turn.should.equal 3
 		board.positions[4].should.equal WHITE
 		board.positions[0].should.equal BLACK
-
 
 describe 'An empty board', ->
 	beforeEach ->
@@ -124,8 +123,7 @@ describe 'An empty board', ->
 
 describe 'A board with one white play in the centre', ->
 	beforeEach ->
-		board = new Board
-		board.play WHITE, null, 5
+		board = board_init [5] 
 
 	it 'should be on turn two', ->
 		board.turn.should.equal 2
@@ -138,10 +136,7 @@ describe 'A board with one white play in the centre', ->
 
 describe 'A board with two plays', ->
 	beforeEach ->
-		board = new Board
-		board.play WHITE, null, 5
-		board.play BLACK, null, 1
-
+		board = board_init [5, 1]
 	it 'should be on turn three', ->
 		board.turn.should.equal 3
 	it 'should not allow Black to play next', ->
@@ -153,13 +148,7 @@ describe 'A board with two plays', ->
 
 describe 'A board that has a winning top row of white pieces', ->
 	beforeEach ->
-		board = new Board
-		board.play WHITE, null, 1
-		board.play BLACK, null, 4
-		board.play WHITE, null, 2
-		board.play BLACK, null, 5
-		board.play WHITE, null, 3
-
+		board = board_init [1, 4, 2, 5, 3]
 	it 'should be a win', ->
 		board.isWin().should.be.true
 	it 'should be a win for white', ->
@@ -167,13 +156,7 @@ describe 'A board that has a winning top row of white pieces', ->
 
 describe 'A board that has a winning top row of black pieces', ->
 	beforeEach ->
-		board = new Board
-		board.play WHITE, null, 5
-		board.play BLACK, null, 1
-		board.play WHITE, null, 6
-		board.play BLACK, null, 2
-		board.play WHITE, null, 8
-		board.play BLACK, null, 3
+		board = board_init [5, 1, 6, 2, 8, 3]
 	it 'should be a win', ->
 		board.isWin().should.be.true
 	it 'should be a win for Black', ->
@@ -181,16 +164,13 @@ describe 'A board that has a winning top row of black pieces', ->
 
 describe 'A board with a winning middle row of white pieces', ->
 	beforeEach ->
-		board = new Board
-		board.play WHITE, null, 4
-		board.play BLACK, null, 1
-		board.play WHITE, null, 5
-		board.play BLACK, null, 2
-		board.play WHITE, null, 6
+		board = board_init [4, 1, 5, 2, 6]
 	it 'should be a win', ->
 		board.isWin().should.be.true
 	it 'should be a win for White', ->
-		board.winner().should.equal WHITE		
+		board.winner().should.equal WHITE
+
+	
 
 # describe 'A board where White and Black have played all their pieces', ->
 # 	it 'should not allow Black to play next', ->
