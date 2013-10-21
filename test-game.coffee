@@ -40,24 +40,10 @@ describe 'An empty board', ->
 	it 'should not allow White to play at position other than 1-9', ->
 		board.canPlay('W', null, 0).should.be.false
 		board.canPlay('W', null, 10).should.be.false
-	it 'should have position 1 be empty', ->
-		board.isEmpty(1).should.be.true
-	it 'should have position 2 be empty', ->
-		board.isEmpty(2).should.be.true
-	it 'should have position 3 be empty', ->
-		board.isEmpty(3).should.be.true
-	it 'should have position 4 be empty', ->
-		board.isEmpty(4).should.be.true
-	it 'should have position 5 be empty', ->
-		board.isEmpty(5).should.be.true
-	it 'should have position 6 be empty', ->
-		board.isEmpty(6).should.be.true
-	it 'should have position 7 be empty', ->
-		board.isEmpty(7).should.be.true
-	it 'should have position 8 be empty', ->
-		board.isEmpty(8).should.be.true
-	it 'should have position 9 be empty', ->
-		board.isEmpty(9).should.be.true
+	for i in [1..9]
+		do (i) ->
+			it "should have position #{i} be empty", ->
+				board.isEmpty(i).should.be.true
 	it 'should have a white piece in position 1 have if white plays there', ->
 		board.play('W', null, 1).should.be.true
 		board.isEmpty(1).should.be.false
