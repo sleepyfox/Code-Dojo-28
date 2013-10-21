@@ -60,9 +60,6 @@ describe 'A board with one white play in the centre', ->
 		board.canPlay('W', null, 6).should.be.false
 	it 'should allow Black to play in position 1', ->
 		board.canPlay('B', null, 1).should.be.true
-	it 'should be on turn three after black has moved', ->
-		board.play 'B', null, 1
-		board.turn.should.equal 3
 
 describe 'A board with two plays', ->
 	it 'should be on turn three', ->
@@ -70,4 +67,4 @@ describe 'A board with two plays', ->
 		board.play 'W', null, 5
 		board.play 'B', null, 1
 		board.turn.should.equal 3
-		
+
