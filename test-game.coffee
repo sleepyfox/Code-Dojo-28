@@ -13,7 +13,9 @@ class Board
 			false
 	isWinFor: (p) ->
 		win = false
-		if (@positions[0] is p and @positions[1] is p and @positions[2] is p )
+		if (@positions[0] is p and @positions[1] is p and @positions[2] is p)
+			win = true
+		if (@positions[3] is p and @positions[4] is p and @positions[5] is p)
 			win = true
 		win
 	winner: ->
@@ -120,6 +122,24 @@ describe 'A board that has a winning top row of black pieces', ->
 		board.isWin().should.be.true
 	it 'should be a win for Black', ->
 		board.winner().should.equal 'B'
+
+describe 'A board with a winning middle row of white pieces', ->
+	it 'should be a win', ->
+		board = new Board
+		board.play 'W', null, 4
+		board.play 'B', null, 1
+		board.play 'W', null, 5
+		board.play 'B', null, 2
+		board.play 'W', null, 6
+		board.isWin().should.be.true
+	it 'should be a win for White', ->
+		board = new Board
+		board.play 'W', null, 4
+		board.play 'B', null, 1
+		board.play 'W', null, 5
+		board.play 'B', null, 2
+		board.play 'W', null, 6
+		board.winner().should.equal 'W'		
 
 # describe 'A board where White and Black have played all their pieces', ->
 # 	it 'should not allow Black to play next', ->
