@@ -80,6 +80,14 @@ describe 'A board initialiser', ->
 		board = board_init([])
 		board.turn.should.equal 1
 		board.isWin().should.be.false
+	it 'should when given a single play return a board with onbe white piece', ->
+		board_init = (moves) ->
+			b = new Board
+			b.play('W', null, moves[0])
+			b
+		board = board_init([[5]])
+		board.turn.should.equal 2
+		board.positions[4].should.equal 'W'		
 
 describe 'An empty board', ->
 	beforeEach ->
