@@ -35,7 +35,7 @@ describe 'An empty board', ->
 	beforeEach ->
 		board = new Board
 
-	it 'should not be won', ->
+	it 'should not be a winning board', ->
 		board.isWin().should.be.false
 	it 'should be on turn one', ->
 		board.turn.should.equal 1
@@ -65,6 +65,8 @@ describe 'A board with one white play in the centre', ->
 		board.canPlay('W', null, 6).should.be.false
 	it 'should allow Black to play in position 1', ->
 		board.canPlay('B', null, 1).should.be.true
+	it 'should not be a winning board', ->
+		board.isWin().should.be.false
 
 describe 'A board with two plays', ->
 	beforeEach ->
@@ -78,6 +80,8 @@ describe 'A board with two plays', ->
 		board.canPlay('B', null, 2).should.be.false
 	it 'should allow White to play in position 3', ->
 		board.canPlay('W', null, 3).should.be.true
+	it 'should not be a win', ->
+		board.isWin().should.be.false
 
 describe 'A board that has a winning top row of white pieces', ->
 	it 'should be a win', ->
@@ -96,3 +100,15 @@ describe 'A board that has a winning top row of white pieces', ->
 		board.play 'B', null, 5
 		board.play 'W', null, 3
 		board.winner().should.equal 'W'
+
+xdescribe 'A board that has a winning top row of black pieces', ->
+
+
+# describe 'A board where White and Black have played all their pieces', ->
+# 	it 'should not allow Black to play next', ->
+# 		board = new Board
+# 		board.play 'W', null, 1
+# 		board.play 'B', null, 2
+# 		board.play 'W', null, 3
+# 		board.play 'B', null, 4
+
