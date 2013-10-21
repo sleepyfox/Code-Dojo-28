@@ -19,6 +19,8 @@ class Board
 			win = true
 		if (@positions[3] is p and @positions[4] is p and @positions[5] is p)
 			win = true
+		if (@positions[6] is p and @positions[7] is p and @positions[8] is p)
+			win = true		
 		win
 	winner: ->
 		if @isWinFor(BLACK)
@@ -170,6 +172,13 @@ describe 'A board with a winning middle row of white pieces', ->
 	it 'should be a win for White', ->
 		board.winner().should.equal WHITE
 
+describe 'A board with a winning bottom row of white pieces', ->
+	beforeEach ->
+		board = board_init [7, 1, 8, 2, 9]
+	it 'should be a win', ->
+		board.isWin().should.be.true
+	it 'should be a win for White', ->
+		board.winner().should.equal WHITE
 	
 
 # describe 'A board where White and Black have played all their pieces', ->
