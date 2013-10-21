@@ -15,7 +15,11 @@ describe 'An empty board', ->
 					false
 			else
 				false
-				
+		play: (player, old_position, new_position) ->
+			true
+		isEmpty: (position) ->
+			false
+
 	beforeEach ->
 		board = new Board
 
@@ -25,8 +29,12 @@ describe 'An empty board', ->
 		board.turn.should.equal 1
 	it 'should allow White to place a piece at position 1', ->
 		board.canPlay('W', null, 1).should.be.true
-	it 'should not allow Black to place a piece at position 1', ->
+	it 'should not allow Black to place a piece', ->
 		board.canPlay('B', null, 1).should.be.false
 	it 'should not allow White to play at position other than 1-9', ->
 		board.canPlay('W', null, 0).should.be.false
 		board.canPlay('W', null, 10).should.be.false
+	it 'should have a white piece in position 1 have if white plays there', ->
+		board.play('W', null, 1).should.be.true
+		board.isEmpty(1).should.be.false
+	
