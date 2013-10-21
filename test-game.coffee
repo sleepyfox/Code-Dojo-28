@@ -50,21 +50,17 @@ describe 'An empty board', ->
 		board.isEmpty(1).should.be.false
 
 describe 'A board with one white play in the centre', ->
-	it 'should be on turn two', ->
+	beforeEach ->
 		board = new Board
 		board.play 'W', null, 5
+
+	it 'should be on turn two', ->
 		board.turn.should.equal 2
 	it 'should not allow White to play next', ->
-		board = new Board
-		board.play 'W', null, 5
 		board.canPlay('W', null, 6).should.be.false
 	it 'should allow Black to play in position 1', ->
-		board = new Board
-		board.play 'W', null, 5
 		board.canPlay('B', null, 1).should.be.true
 	it 'should be on turn three after black has moved', ->
-		board = new Board
-		board.play 'W', null, 5
 		board.play 'B', null, 1
 		board.turn.should.equal 3
 
