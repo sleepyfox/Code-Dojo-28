@@ -73,8 +73,13 @@ describe 'A move', ->
 			(-> new Move('W', null, 10)).should.throw "Invalid location"
 
 
-xdescribe 'A board initialiser', ->
-	xit 'should take an array of moves'
+describe 'A board initialiser', ->
+	it 'should when given an empty array return an empty board', ->
+		board_init = ->
+			new Board
+		board = board_init([])
+		board.turn.should.equal 1
+		board.isWin().should.be.false
 
 describe 'An empty board', ->
 	beforeEach ->
