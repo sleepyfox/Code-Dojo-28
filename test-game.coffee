@@ -15,12 +15,18 @@ class Board
 			false
 	isWinFor: (p) ->
 		win = false
+		# Rows
 		if (@positions[0] is p and @positions[1] is p and @positions[2] is p)
 			win = true
 		if (@positions[3] is p and @positions[4] is p and @positions[5] is p)
 			win = true
 		if (@positions[6] is p and @positions[7] is p and @positions[8] is p)
-			win = true		
+			win = true	
+		# Columns
+		if (@positions[0] is p and @positions[3] is p and @positions[6] is p)
+			win = true			
+		if (@positions[1] is p and @positions[4] is p and @positions[7] is p)
+			win = true			
 		win
 	winner: ->
 		if @isWinFor(BLACK)
@@ -99,6 +105,7 @@ describe 'A board initialiser', ->
 		board.turn.should.equal 3
 		board.positions[4].should.equal WHITE
 		board.positions[0].should.equal BLACK
+	it ''
 
 describe 'An empty board', ->
 	beforeEach ->
@@ -148,7 +155,7 @@ describe 'A board with two plays', ->
 	it 'should not be a win', ->
 		board.isWin().should.be.false
 
-describe 'A board that has a winning top row of white pieces', ->
+describe 'A board that has a winning top row of White pieces', ->
 	beforeEach ->
 		board = board_init [1, 4, 2, 5, 3]
 	it 'should be a win', ->
@@ -156,7 +163,7 @@ describe 'A board that has a winning top row of white pieces', ->
 	it 'should be a win for white', ->
 		board.winner().should.equal WHITE
 
-describe 'A board that has a winning top row of black pieces', ->
+describe 'A board that has a winning top row of Black pieces', ->
 	beforeEach ->
 		board = board_init [5, 1, 6, 2, 8, 3]
 	it 'should be a win', ->
@@ -164,7 +171,7 @@ describe 'A board that has a winning top row of black pieces', ->
 	it 'should be a win for Black', ->
 		board.winner().should.equal BLACK
 
-describe 'A board with a winning middle row of white pieces', ->
+describe 'A board with a winning middle row of White pieces', ->
 	beforeEach ->
 		board = board_init [4, 1, 5, 2, 6]
 	it 'should be a win', ->
@@ -172,7 +179,7 @@ describe 'A board with a winning middle row of white pieces', ->
 	it 'should be a win for White', ->
 		board.winner().should.equal WHITE
 
-describe 'A board with a winning bottom row of white pieces', ->
+describe 'A board with a winning bottom row of White pieces', ->
 	beforeEach ->
 		board = board_init [7, 1, 8, 2, 9]
 	it 'should be a win', ->
@@ -180,6 +187,21 @@ describe 'A board with a winning bottom row of white pieces', ->
 	it 'should be a win for White', ->
 		board.winner().should.equal WHITE
 	
+describe 'A board with a winning left column of Black pieces', ->
+	beforeEach ->
+		board = board_init [5, 1, 8, 4, 9, 7]
+	it 'should be a win', ->
+		board.isWin().should.be.true
+	it 'should be a win for White', ->
+		board.winner().should.equal BLACK
+
+describe 'A board with a winning middle column of Black pieces', ->
+	beforeEach ->
+		board = board_init [1, 2, 9, 5, 7, 8]
+	it 'should be a win', ->
+		board.isWin().should.be.true
+	it 'should be a win for White', ->
+		board.winner().should.equal BLACK
 
 # describe 'A board where White and Black have played all their pieces', ->
 # 	it 'should not allow Black to play next', ->
