@@ -12,3 +12,11 @@ describe 'An empty board', ->
 				@turn = 1
 		board = new Board
 		board.turn.should.equal 1
+	it 'should allow White to place a piece at position 1', ->
+		class Board
+			constructor: ->
+				@turn = 1
+			canPlay: (player, position)	->
+				true
+		board = new Board
+		board.canPlay('W', 1).should.be.true
