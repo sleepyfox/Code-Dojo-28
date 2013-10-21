@@ -124,21 +124,16 @@ describe 'A board that has a winning top row of black pieces', ->
 		board.winner().should.equal 'B'
 
 describe 'A board with a winning middle row of white pieces', ->
-	it 'should be a win', ->
+	beforeEach ->
 		board = new Board
 		board.play 'W', null, 4
 		board.play 'B', null, 1
 		board.play 'W', null, 5
 		board.play 'B', null, 2
 		board.play 'W', null, 6
+	it 'should be a win', ->
 		board.isWin().should.be.true
 	it 'should be a win for White', ->
-		board = new Board
-		board.play 'W', null, 4
-		board.play 'B', null, 1
-		board.play 'W', null, 5
-		board.play 'B', null, 2
-		board.play 'W', null, 6
 		board.winner().should.equal 'W'		
 
 # describe 'A board where White and Black have played all their pieces', ->
