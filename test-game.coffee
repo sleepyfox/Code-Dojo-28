@@ -9,10 +9,11 @@ class Board
 	isWin: -> false
 	canPlay: (player, old_position, new_position) ->
 		if 0 < new_position < 10
-			if player is 'W' and @turn % 2 is 1
-				true
-			else
-				false
+			if player is 'W' 
+				return @turn % 2 is 1
+			if player is 'B'
+				return @turn % 2 is 0
+			return false
 		else
 			false
 	play: (player, old_position, new_position) ->
@@ -57,3 +58,8 @@ describe 'A board with one white play in the centre', ->
 		board = new Board
 		board.play 'W', null, 5
 		board.canPlay('W', null, 6).should.be.false
+	it 'should allow Black to play in position 1', ->
+		board = new Board
+		board.play 'W', null, 5
+		board.canPlay('B', null, 1).should.be.true
+
