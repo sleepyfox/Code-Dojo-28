@@ -3,6 +3,7 @@ should = require('chai').should()
 board = {}
 WHITE = 'W'
 BLACK = 'B'
+EMPTY = '-'
 
 class Board
 	constructor: ->
@@ -36,6 +37,8 @@ class Board
 		false
 	canPlay: (player, old_position, new_position) ->
 		if 0 < new_position < 10
+			if @positions[new_position - 1] isnt EMPTY 
+				return false
 			if player is WHITE 
 				return @turn % 2 is 1
 			if player is BLACK
@@ -59,29 +62,32 @@ class Move
 			throw new Error "Invalid player"
 		if @future_pos is null
 			throw new Error "Invalid location: null"
-		if @current_pos < 1 or @current_pos > 9
-			throw new Error "Invalid location"
+		if @current_pos isnt null
+			if @current_pos < 1 or @current_pos > 9
+				throw new Error "Invalid location"
 		if @future_pos < 1 or @future_pos > 9
 			throw new Error "Invalid location"
 
 board_init = (moves) ->
 	b = new Board
+	if moves.length is 0
+		return b 
 	player_list = [BLACK, WHITE]
 	for i in [1..moves.length]
 		move = moves[i - 1]
 		player = player_list[i % 2]
-		b.play(player, null, move)
+		throw new Error "Not empty location" unless b.play(player, null, move) 
 	b
 
 describe 'A move', ->
 	describe 'has a player which', ->
 		it 'should be black or white', ->
-			(-> new Move(BLACK, null, 1)).should.not.throw 
-			(-> new Move(WHITE, null, 1)).should.not.throw 
+			(-> new Move(BLACK, null, 1)).should.not.throw()
+			(-> new Move(WHITE, null, 1)).should.not.throw()
 		it 'should not allow non-black or white players', ->
 			(-> new Move('X', 1, 1)).should.throw "Invalid player"
 		it 'should allow a current piece position of null', ->
-			(-> new Move(WHITE, null, 3)).should.not.throw
+			(-> new Move(WHITE, null, 3)).should.not.throw()
 		it 'should not allow null for the future piece position', ->
 			(-> new Move(WHITE, null, null)).should.throw "Invalid location"
 		it 'should not allow a current piece location of less than 1', ->
@@ -93,19 +99,21 @@ describe 'A move', ->
 
 describe 'A board initialiser', ->
 	it 'should when given an empty array return an empty board', ->
-		board = board_init([])
+		board = board_init []
 		board.turn.should.equal 1
 		board.isWin().should.be.false
 	it 'should when given a single play return a board with one White piece', ->
-		board = board_init([[5]])
+		board = board_init [5]
 		board.turn.should.equal 2
 		board.positions[4].should.equal WHITE	
 	it 'should when given two plays return a board with one White and one Black piece', ->
-		board = board_init([5,1])
+		board = board_init [5,1] 
 		board.turn.should.equal 3
 		board.positions[4].should.equal WHITE
 		board.positions[0].should.equal BLACK
-	it ''
+	it 'should when given two plays in the same space throw an error', ->
+		(-> board = board_init [1, 1]).should.throw "Not empty location"
+
 
 describe 'An empty board', ->
 	beforeEach ->
@@ -142,6 +150,8 @@ describe 'A board with one white play in the centre', ->
 		board.canPlay(BLACK, null, 1).should.be.true
 	it 'should not be a winning board', ->
 		board.isWin().should.be.false
+	it 'should not allow Black to play in the centre', ->
+		board.canPlay(BLACK, null, 5).should.be.false
 
 describe 'A board with two plays', ->
 	beforeEach ->
