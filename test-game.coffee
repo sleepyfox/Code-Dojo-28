@@ -72,4 +72,9 @@ describe 'A board with two plays', ->
 		board.play 'W', null, 5
 		board.play 'B', null, 1
 		board.canPlay('B', null, 2).should.be.false
-			
+	it 'should allow White to play in position 3', ->
+		board = new Board
+		board.play 'W', null, 5
+		board.play 'B', null, 1
+		board.canPlay('W', null, 3).should.be.true
+
