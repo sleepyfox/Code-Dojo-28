@@ -1,6 +1,8 @@
 should = require('chai').should()
 
 board = {}
+WHITE = 'W'
+BLACK = 'B'
 
 class Board
 	constructor: ->
@@ -19,16 +21,16 @@ class Board
 			win = true
 		win
 	winner: ->
-		if @isWinFor('B')
-			return 'B'
-		if @isWinFor('W')
-			return 'W'
+		if @isWinFor(BLACK)
+			return BLACK
+		if @isWinFor(WHITE)
+			return WHITE
 		false
 	canPlay: (player, old_position, new_position) ->
 		if 0 < new_position < 10
-			if player is 'W' 
+			if player is WHITE 
 				return @turn % 2 is 1
-			if player is 'B'
+			if player is BLACK
 				return @turn % 2 is 0
 			return false
 		else
@@ -45,7 +47,7 @@ class Board
 
 class Move
 	constructor: (@player, @current_pos, @future_pos) ->
-		if player isnt 'W' and player isnt 'B'
+		if player isnt WHITE and player isnt BLACK
 			throw new Error "Invalid player"
 		if @future_pos is null
 			throw new Error "Invalid location: null"
@@ -57,20 +59,20 @@ class Move
 describe 'A move', ->
 	describe 'has a player which', ->
 		it 'should be black or white', ->
-			(-> new Move('B', null, 1)).should.not.throw 
-			(-> new Move('W', null, 1)).should.not.throw 
+			(-> new Move(BLACK, null, 1)).should.not.throw 
+			(-> new Move(WHITE, null, 1)).should.not.throw 
 		it 'should not allow non-black or white players', ->
 			(-> new Move('X', 1, 1)).should.throw "Invalid player"
 		it 'should allow a current piece position of null', ->
-			(-> new Move('W', null, 3)).should.not.throw
+			(-> new Move(WHITE, null, 3)).should.not.throw
 		it 'should not allow null for the future piece position', ->
-			(-> new Move('W', null, null)).should.throw "Invalid location"
+			(-> new Move(WHITE, null, null)).should.throw "Invalid location"
 		it 'should not allow a current piece location of less than 1', ->
-			(-> new Move('W', 0, 1)).should.throw "Invalid location"
+			(-> new Move(WHITE, 0, 1)).should.throw "Invalid location"
 		it 'should not allow a future piece position of less than 1', ->
-			(-> new Move('W', null, 0)).should.throw "Invalid location"
+			(-> new Move(WHITE, null, 0)).should.throw "Invalid location"
 		it 'should not allow a future location greater than 9', ->
-			(-> new Move('W', null, 10)).should.throw "Invalid location"
+			(-> new Move(WHITE, null, 10)).should.throw "Invalid location"
 
 
 describe 'A board initialiser', ->
@@ -83,21 +85,21 @@ describe 'A board initialiser', ->
 	it 'should when given a single play return a board with onbe white piece', ->
 		board_init = (moves) ->
 			b = new Board
-			b.play('W', null, moves[0])
+			b.play(WHITE, null, moves[0])
 			b
 		board = board_init([[5]])
 		board.turn.should.equal 2
-		board.positions[4].should.equal 'W'	
+		board.positions[4].should.equal WHITE	
 	it 'should when given two plays return a board with one white and one black piece', ->
 		board_init = (moves) ->
 			b = new Board
-			b.play('W', null, moves[0])
-			b.play('B', null, moves[1])
+			b.play(WHITE, null, moves[0])
+			b.play(BLACK, null, moves[1])
 			b
 		board = board_init([5,1])
 		board.turn.should.equal 3
-		board.positions[4].should.equal 'W'
-		board.positions[0].should.equal 'B'
+		board.positions[4].should.equal WHITE
+		board.positions[0].should.equal BLACK
 
 
 describe 'An empty board', ->
@@ -109,95 +111,95 @@ describe 'An empty board', ->
 	it 'should be on turn one', ->
 		board.turn.should.equal 1
 	it 'should allow White to place a piece at position 1', ->
-		board.canPlay('W', null, 1).should.be.true
+		board.canPlay(WHITE, null, 1).should.be.true
 	it 'should not allow Black to place a piece', ->
-		board.canPlay('B', null, 1).should.be.false
+		board.canPlay(BLACK, null, 1).should.be.false
 	it 'should not allow White to play at position other than 1-9', ->
-		board.canPlay('W', null, 0).should.be.false
-		board.canPlay('W', null, 10).should.be.false
+		board.canPlay(WHITE, null, 0).should.be.false
+		board.canPlay(WHITE, null, 10).should.be.false
 	for i in [1..9]
 		do (i) ->
 			it "should have position #{i} be empty", ->
 				board.isEmpty(i).should.be.true
 	it 'should have a white piece in position 1 have if white plays there', ->
-		board.play('W', null, 1).should.be.true
+		board.play(WHITE, null, 1).should.be.true
 		board.isEmpty(1).should.be.false
 
 describe 'A board with one white play in the centre', ->
 	beforeEach ->
 		board = new Board
-		board.play 'W', null, 5
+		board.play WHITE, null, 5
 
 	it 'should be on turn two', ->
 		board.turn.should.equal 2
 	it 'should not allow White to play next', ->
-		board.canPlay('W', null, 6).should.be.false
+		board.canPlay(WHITE, null, 6).should.be.false
 	it 'should allow Black to play in position 1', ->
-		board.canPlay('B', null, 1).should.be.true
+		board.canPlay(BLACK, null, 1).should.be.true
 	it 'should not be a winning board', ->
 		board.isWin().should.be.false
 
 describe 'A board with two plays', ->
 	beforeEach ->
 		board = new Board
-		board.play 'W', null, 5
-		board.play 'B', null, 1
+		board.play WHITE, null, 5
+		board.play BLACK, null, 1
 
 	it 'should be on turn three', ->
 		board.turn.should.equal 3
 	it 'should not allow Black to play next', ->
-		board.canPlay('B', null, 2).should.be.false
+		board.canPlay(BLACK, null, 2).should.be.false
 	it 'should allow White to play in position 3', ->
-		board.canPlay('W', null, 3).should.be.true
+		board.canPlay(WHITE, null, 3).should.be.true
 	it 'should not be a win', ->
 		board.isWin().should.be.false
 
 describe 'A board that has a winning top row of white pieces', ->
 	beforeEach ->
 		board = new Board
-		board.play 'W', null, 1
-		board.play 'B', null, 4
-		board.play 'W', null, 2
-		board.play 'B', null, 5
-		board.play 'W', null, 3
+		board.play WHITE, null, 1
+		board.play BLACK, null, 4
+		board.play WHITE, null, 2
+		board.play BLACK, null, 5
+		board.play WHITE, null, 3
 
 	it 'should be a win', ->
 		board.isWin().should.be.true
 	it 'should be a win for white', ->
-		board.winner().should.equal 'W'
+		board.winner().should.equal WHITE
 
 describe 'A board that has a winning top row of black pieces', ->
 	beforeEach ->
 		board = new Board
-		board.play 'W', null, 5
-		board.play 'B', null, 1
-		board.play 'W', null, 6
-		board.play 'B', null, 2
-		board.play 'W', null, 8
-		board.play 'B', null, 3
+		board.play WHITE, null, 5
+		board.play BLACK, null, 1
+		board.play WHITE, null, 6
+		board.play BLACK, null, 2
+		board.play WHITE, null, 8
+		board.play BLACK, null, 3
 	it 'should be a win', ->
 		board.isWin().should.be.true
 	it 'should be a win for Black', ->
-		board.winner().should.equal 'B'
+		board.winner().should.equal BLACK
 
 describe 'A board with a winning middle row of white pieces', ->
 	beforeEach ->
 		board = new Board
-		board.play 'W', null, 4
-		board.play 'B', null, 1
-		board.play 'W', null, 5
-		board.play 'B', null, 2
-		board.play 'W', null, 6
+		board.play WHITE, null, 4
+		board.play BLACK, null, 1
+		board.play WHITE, null, 5
+		board.play BLACK, null, 2
+		board.play WHITE, null, 6
 	it 'should be a win', ->
 		board.isWin().should.be.true
 	it 'should be a win for White', ->
-		board.winner().should.equal 'W'		
+		board.winner().should.equal WHITE		
 
 # describe 'A board where White and Black have played all their pieces', ->
 # 	it 'should not allow Black to play next', ->
 # 		board = new Board
-# 		board.play 'W', null, 1
-# 		board.play 'B', null, 2
-# 		board.play 'W', null, 3
-# 		board.play 'B', null, 4
+# 		board.play WHITE, null, 1
+# 		board.play BLACK, null, 2
+# 		board.play WHITE, null, 3
+# 		board.play BLACK, null, 4
 
