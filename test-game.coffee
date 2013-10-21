@@ -6,7 +6,12 @@ class Board
 	constructor: ->
 		@turn = 1
 		@positions = "---------".split ''
-	isWin: -> false
+	isWin: ->
+		if (@positions[0] is 'W' and @positions[1] is 'W' and @positions[2] is 'W' )
+			true
+		else
+			false
+	winner: -> 'W'
 	canPlay: (player, old_position, new_position) ->
 		if 0 < new_position < 10
 			if player is 'W' 
@@ -74,3 +79,20 @@ describe 'A board with two plays', ->
 	it 'should allow White to play in position 3', ->
 		board.canPlay('W', null, 3).should.be.true
 
+describe 'A board that has a winning top row of white pieces', ->
+	it 'should be a win', ->
+		board = new Board
+		board.play 'W', null, 1
+		board.play 'B', null, 4
+		board.play 'W', null, 2
+		board.play 'B', null, 5
+		board.play 'W', null, 3
+		board.isWin().should.be.true
+	it 'should be a win for white', ->
+		board = new Board
+		board.play 'W', null, 1
+		board.play 'B', null, 4
+		board.play 'W', null, 2
+		board.play 'B', null, 5
+		board.play 'W', null, 3
+		board.winner().should.equal 'W'
