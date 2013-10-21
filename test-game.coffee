@@ -43,6 +43,39 @@ class Board
 	isEmpty: (position) ->
 		@positions[position - 1] is '-'
 
+class Move
+	constructor: (@player, @current_pos, @future_pos) ->
+		if player isnt 'W' and player isnt 'B'
+			throw new Error "Invalid player"
+		if @future_pos is null
+			throw new Error "Invalid location: null"
+		if @current_pos < 1 or @current_pos > 9
+			throw new Error "Invalid location"
+		if @future_pos < 1 or @future_pos > 9
+			throw new Error "Invalid location"
+
+describe 'A move', ->
+	describe 'has a player which', ->
+		it 'should be black or white', ->
+			(-> new Move('B', null, 1)).should.not.throw 
+			(-> new Move('W', null, 1)).should.not.throw 
+		it 'should not allow non-black or white players', ->
+			(-> new Move('X', 1, 1)).should.throw "Invalid player"
+		it 'should allow a current piece position of null', ->
+			(-> new Move('W', null, 3)).should.not.throw
+		it 'should not allow null for the future piece position', ->
+			(-> new Move('W', null, null)).should.throw "Invalid location"
+		it 'should not allow a current piece location of less than 1', ->
+			(-> new Move('W', 0, 1)).should.throw "Invalid location"
+		it 'should not allow a future piece position of less than 1', ->
+			(-> new Move('W', null, 0)).should.throw "Invalid location"
+		it 'should not allow a future location greater than 9', ->
+			(-> new Move('W', null, 10)).should.throw "Invalid location"
+
+
+xdescribe 'A board initialiser', ->
+	xit 'should take an array of moves'
+
 describe 'An empty board', ->
 	beforeEach ->
 		board = new Board
