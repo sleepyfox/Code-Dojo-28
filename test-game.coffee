@@ -7,11 +7,21 @@ class Board
 		@turn = 1
 		@positions = "---------".split ''
 	isWin: ->
-		if (@positions[0] is 'W' and @positions[1] is 'W' and @positions[2] is 'W' )
+		if @winner() 
 			true
-		else
+		else 
 			false
-	winner: -> 'W'
+	isWinFor: (p) ->
+		win = false
+		if (@positions[0] is p and @positions[1] is p and @positions[2] is p )
+			win = true
+		win
+	winner: ->
+		if @isWinFor('B')
+			return 'B'
+		if @isWinFor('W')
+			return 'W'
+		false
 	canPlay: (player, old_position, new_position) ->
 		if 0 < new_position < 10
 			if player is 'W' 
@@ -97,9 +107,25 @@ describe 'A board that has a winning top row of white pieces', ->
 	it 'should be a win for white', ->
 		board.winner().should.equal 'W'
 
-xdescribe 'A board that has a winning top row of black pieces', ->
+describe 'A board that has a winning top row of black pieces', ->
 	it 'should be a win', ->
-
+		board = new Board
+		board.play 'W', null, 5
+		board.play 'B', null, 1
+		board.play 'W', null, 6
+		board.play 'B', null, 2
+		board.play 'W', null, 8
+		board.play 'B', null, 3
+		board.isWin().should.be.true
+	it 'should be a win for Black', ->
+		board = new Board
+		board.play 'W', null, 5
+		board.play 'B', null, 1
+		board.play 'W', null, 6
+		board.play 'B', null, 2
+		board.play 'W', null, 8
+		board.play 'B', null, 3
+		board.winner().should.equal 'B'
 
 # describe 'A board where White and Black have played all their pieces', ->
 # 	it 'should not allow Black to play next', ->
