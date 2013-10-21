@@ -62,4 +62,9 @@ describe 'A board with one white play in the centre', ->
 		board = new Board
 		board.play 'W', null, 5
 		board.canPlay('B', null, 1).should.be.true
+	it 'should be on turn three after black has moved', ->
+		board = new Board
+		board.play 'W', null, 5
+		board.play 'B', null, 1
+		board.turn.should.equal 3
 
