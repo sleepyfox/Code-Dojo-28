@@ -64,3 +64,10 @@ describe 'A board with one white play in the centre', ->
 		board.play 'B', null, 1
 		board.turn.should.equal 3
 
+describe 'A board with two plays', ->
+	it 'should be on turn three', ->
+		board = new Board
+		board.play 'W', null, 5
+		board.play 'B', null, 1
+		board.turn.should.equal 3
+		
