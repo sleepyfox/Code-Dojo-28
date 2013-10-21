@@ -8,8 +8,11 @@ describe 'An empty board', ->
 			@turn = 1
 		isWin: -> false
 		canPlay: (player, old_position, new_position) ->
-			if player is 'W' 
-				true
+			if 0 < new_position < 10
+				if player is 'W' 
+					true
+				else
+					false
 			else
 				false
 				
@@ -24,3 +27,6 @@ describe 'An empty board', ->
 		board.canPlay('W', null, 1).should.be.true
 	it 'should not allow Black to place a piece at position 1', ->
 		board.canPlay('B', null, 1).should.be.false
+	it 'should not allow White to play at position other than 1-9', ->
+		board.canPlay('W', null, 0).should.be.false
+		board.canPlay('W', null, 10).should.be.false
