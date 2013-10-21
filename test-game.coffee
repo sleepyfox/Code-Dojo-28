@@ -84,24 +84,21 @@ describe 'A board with two plays', ->
 		board.isWin().should.be.false
 
 describe 'A board that has a winning top row of white pieces', ->
-	it 'should be a win', ->
+	beforeEach ->
 		board = new Board
 		board.play 'W', null, 1
 		board.play 'B', null, 4
 		board.play 'W', null, 2
 		board.play 'B', null, 5
 		board.play 'W', null, 3
+
+	it 'should be a win', ->
 		board.isWin().should.be.true
 	it 'should be a win for white', ->
-		board = new Board
-		board.play 'W', null, 1
-		board.play 'B', null, 4
-		board.play 'W', null, 2
-		board.play 'B', null, 5
-		board.play 'W', null, 3
 		board.winner().should.equal 'W'
 
 xdescribe 'A board that has a winning top row of black pieces', ->
+	it 'should be a win', ->
 
 
 # describe 'A board where White and Black have played all their pieces', ->
