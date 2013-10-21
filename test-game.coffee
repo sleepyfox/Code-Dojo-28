@@ -76,26 +76,23 @@ describe 'A move', ->
 
 
 describe 'A board initialiser', ->
+	board_init = (moves) ->
+		b = new Board
+		player_list = [BLACK, WHITE]
+		for i in [1..moves.length]
+			move = moves[i - 1]
+			player = player_list[i % 2]
+			b.play(player, null, move)
+		b
 	it 'should when given an empty array return an empty board', ->
-		board_init = ->
-			new Board
 		board = board_init([])
 		board.turn.should.equal 1
 		board.isWin().should.be.false
-	it 'should when given a single play return a board with onbe white piece', ->
-		board_init = (moves) ->
-			b = new Board
-			b.play(WHITE, null, moves[0])
-			b
+	it 'should when given a single play return a board with one White piece', ->
 		board = board_init([[5]])
 		board.turn.should.equal 2
 		board.positions[4].should.equal WHITE	
-	it 'should when given two plays return a board with one white and one black piece', ->
-		board_init = (moves) ->
-			b = new Board
-			b.play(WHITE, null, moves[0])
-			b.play(BLACK, null, moves[1])
-			b
+	it 'should when given two plays return a board with one White and one Black piece', ->
 		board = board_init([5,1])
 		board.turn.should.equal 3
 		board.positions[4].should.equal WHITE
