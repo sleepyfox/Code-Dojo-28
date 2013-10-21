@@ -6,3 +6,9 @@ describe 'An empty board', ->
 			isWin: -> false
 		board = new Board
 		board.isWin().should.be.false
+	it 'should be on turn one', ->
+		class Board
+			constructor: ->
+				@turn = 1
+		board = new Board
+		board.turn.should.equal 1
