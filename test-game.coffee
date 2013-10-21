@@ -1,31 +1,31 @@
 should = require('chai').should()
 
-describe 'An empty board', ->
-	board = {}
+board = {}
 
-	class Board
-		constructor: ->
-			@turn = 1
-			@positions = "---------".split ''
-		isWin: -> false
-		canPlay: (player, old_position, new_position) ->
-			if 0 < new_position < 10
-				if player is 'W' 
-					true
-				else
-					false
-			else
-				false
-		play: (player, old_position, new_position) ->
-			if @canPlay(player, old_position, new_position)
-				@positions[new_position - 1] = player
-				@turn++
+class Board
+	constructor: ->
+		@turn = 1
+		@positions = "---------".split ''
+	isWin: -> false
+	canPlay: (player, old_position, new_position) ->
+		if 0 < new_position < 10
+			if player is 'W' and @turn % 2 is 1
 				true
 			else
 				false
-		isEmpty: (position) ->
-			@positions[position - 1] is '-'
+		else
+			false
+	play: (player, old_position, new_position) ->
+		if @canPlay(player, old_position, new_position)
+			@positions[new_position - 1] = player
+			@turn++
+			true
+		else
+			false
+	isEmpty: (position) ->
+		@positions[position - 1] is '-'
 
+describe 'An empty board', ->
 	beforeEach ->
 		board = new Board
 
@@ -48,4 +48,12 @@ describe 'An empty board', ->
 		board.play('W', null, 1).should.be.true
 		board.isEmpty(1).should.be.false
 
-
+describe 'A board with one white play in the centre', ->
+	it 'should be on turn two', ->
+		board = new Board
+		board.play 'W', null, 5
+		board.turn.should.equal 2
+	it 'should not allow White to play next', ->
+		board = new Board
+		board.play 'W', null, 5
+		board.canPlay('W', null, 6).should.be.false
