@@ -16,25 +16,14 @@ class Board
 			false
 	isWinFor: (p) ->
 		win = false
-		# Rows
-		if (@positions[0] is p and @positions[1] is p and @positions[2] is p)
-			win = true
-		if (@positions[3] is p and @positions[4] is p and @positions[5] is p)
-			win = true
-		if (@positions[6] is p and @positions[7] is p and @positions[8] is p)
-			win = true	
-		# Columns
-		if (@positions[0] is p and @positions[3] is p and @positions[6] is p)
-			win = true			
-		if (@positions[1] is p and @positions[4] is p and @positions[7] is p)
-			win = true			
-		if (@positions[2] is p and @positions[5] is p and @positions[8] is p)
-			win = true	
-		# Diagonals
-		if (@positions[0] is p and @positions[4] is p and @positions[8] is p)
-			win = true	
-		if (@positions[2] is p and @positions[4] is p and @positions[6] is p)
-			win = true	
+		wins = [[0, 1, 2], [3, 4, 5], [6, 7, 8], # rows
+				[0, 3, 6], [1, 4, 7], [2, 5, 8], # columns
+				[0, 4, 8], [2, 4, 6]]            # diagonals
+		for a in wins
+			if (@positions[a[0]] is p and
+			@positions[a[1]] is p and
+			@positions[a[2]] is p)
+				win = true
 		win
 	winner: ->
 		if @isWinFor(BLACK)
@@ -76,15 +65,15 @@ class Move
 			throw new Error "Invalid location"
 
 board_init = (moves) ->
-	b = new Board
+	board = new Board
 	if moves.length is 0
-		return b 
+		return board 
 	player_list = [BLACK, WHITE]
 	for i in [1..moves.length]
 		move = moves[i - 1]
 		player = player_list[i % 2]
-		throw new Error "Not empty location" unless b.play(player, null, move) 
-	b
+		throw new Error "Not empty location" unless board.play(player, null, move) 
+	board
 
 describe 'A move', ->
 	describe 'has a player which', ->
