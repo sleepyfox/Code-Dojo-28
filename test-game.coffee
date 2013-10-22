@@ -29,7 +29,12 @@ class Board
 		if (@positions[1] is p and @positions[4] is p and @positions[7] is p)
 			win = true			
 		if (@positions[2] is p and @positions[5] is p and @positions[8] is p)
-			win = true			
+			win = true	
+		# Diagonals
+		if (@positions[0] is p and @positions[4] is p and @positions[8] is p)
+			win = true	
+		if (@positions[2] is p and @positions[4] is p and @positions[6] is p)
+			win = true	
 		win
 	winner: ->
 		if @isWinFor(BLACK)
@@ -222,6 +227,22 @@ describe 'A board with a winning right column of Black pieces', ->
 		board.isWin().should.be.true
 	it 'should be a win for White', ->
 		board.winner().should.equal BLACK
+
+describe 'A board with a winning leading diagonal of White pieces', ->
+	beforeEach ->
+		board = board_init [1, 2, 5, 3, 9]
+	it 'should be a win', ->
+		board.isWin().should.be.true
+	it 'should be a win for White', ->
+		board.winner().should.equal WHITE
+
+describe 'A board with a winning trailing diagonal of White pieces', ->
+	beforeEach ->
+		board = board_init [3, 2, 5, 4, 7]
+	it 'should be a win', ->
+		board.isWin().should.be.true
+	it 'should be a win for White', ->
+		board.winner().should.equal WHITE
 
 # describe 'A board where White and Black have played all their pieces', ->
 # 	it 'should not allow Black to play next', ->
