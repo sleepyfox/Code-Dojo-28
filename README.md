@@ -1,4 +1,4 @@
-Code Dojo 27
+Code Dojo 28
 ============
 This is my worked example from the 28th meeting of the London Code Dojo. Feel free to play around with it. I've used Node.js and CoffeeScript with the Mocha testing library and the Chai assertion library.
 
