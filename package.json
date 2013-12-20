@@ -4,7 +4,8 @@
   "description": "A code kata example based upon the game Three Men's Morris",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --compilers coffee:coffee-script -R spec test-*.coffee"
+    "test": "mocha --compilers coffee:coffee-script -R spec test-*.coffee",
+    "lint": "coffeelint *.coffee"
   },
   "author": "@sleepyfox",
   "license": "see LICENSE file",
@@ -12,5 +13,8 @@
     "coffee-script": "~1.6.3",
     "mocha": "~1.13.0",
     "chai": "~1.8.0"
+  },
+  "devDependencies": {
+    "coffeelint": "~1.0.2"
   }
 }
