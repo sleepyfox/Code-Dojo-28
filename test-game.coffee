@@ -14,15 +14,15 @@ class Board
       true
     else
       false
-  isWinFor: (p) ->
+  isWinFor: (player) ->
     win = false
     wins = [[0, 1, 2], [3, 4, 5], [6, 7, 8], # rows
             [0, 3, 6], [1, 4, 7], [2, 5, 8], # columns
             [0, 4, 8], [2, 4, 6]]            # diagonals
-    for a in wins
-      if (@positions[a[0]] is p and
-          @positions[a[1]] is p and
-          @positions[a[2]] is p)
+    for line in wins
+      if (@positions[line[0]] is player and
+          @positions[line[1]] is player and
+          @positions[line[2]] is player)
         win = true
     win
   winner: ->
@@ -50,9 +50,11 @@ class Board
     else
       false
   isEmpty: (position) ->
-    @positions[position - 1] is '-'
+    @positions[position - 1] is EMPTY
 
 class Move
+  # Note: this is a desired move, not necessarily a valid one 
+  #       in the context of the current board.
   constructor: (@player, @current_pos, @future_pos) ->
     if player isnt WHITE and player isnt BLACK
       throw new Error "Invalid player"
@@ -64,14 +66,19 @@ class Move
     if @future_pos < 1 or @future_pos > 9
       throw new Error "Invalid location"
 
+next_player = (current_player) ->
+  if current_player is WHITE
+    BLACK
+  else
+    WHITE
+
 board_init = (moves) ->
   board = new Board
   if moves.length is 0
     return board
-  player_list = [BLACK, WHITE]
   for i in [1..moves.length]
     move = moves[i - 1]
-    player = player_list[i % 2]
+    player = next_player player
     throw new Error "Not empty location" unless board.play(player, null, move)
   board
 
