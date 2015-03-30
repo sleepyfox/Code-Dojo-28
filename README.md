@@ -24,11 +24,12 @@ Boards have been found carved into cloister seats in many English cathedrals:  C
 The objective of the game is to get your three counters in a row, either horizontally, vertically or diagonally.
 
 The board is a three row three column grid like so:
------
-|\|/|
-|-+-|
-|/|\|
------
+
+	-----
+	|\|/|
+	|-+-|
+	|/|\|
+	-----
 
 There are two players, white and black. 
 As in the game of Chess, the white player moves first. 
