@@ -38,7 +38,6 @@ describe 'A board initialiser', ->
   it 'should when given two plays in the same space throw an error', ->
     (-> board = board_init [1, 1]).should.throw "Not empty location"
 
-
 describe 'An empty board', ->
   beforeEach ->
     board = new Board

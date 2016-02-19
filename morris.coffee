@@ -6,11 +6,13 @@ class Board
   constructor: ->
     @turn = 1
     @positions = "---------".split ''
+
   isWin: ->
     if @winner()
       true
     else
       false
+
   isWinFor: (player) ->
     win = false
     wins = [[0, 1, 2], [3, 4, 5], [6, 7, 8], # rows
@@ -22,12 +24,14 @@ class Board
           @positions[line[2]] is player)
         win = true
     win
+
   winner: ->
     if @isWinFor(BLACK)
       return BLACK
     if @isWinFor(WHITE)
       return WHITE
     false
+
   canPlay: (player, old_position, new_position) ->
     if 0 < new_position < 10
       if @positions[new_position - 1] isnt EMPTY
@@ -39,6 +43,7 @@ class Board
       return false
     else
       false
+
   play: (player, old_position, new_position) ->
     if @canPlay(player, old_position, new_position)
       @positions[new_position - 1] = player
@@ -46,6 +51,7 @@ class Board
       true
     else
       false
+
   isEmpty: (position) ->
     @positions[position - 1] is EMPTY
 
@@ -63,6 +69,7 @@ class Move
     if @future_pos < 1 or @future_pos > 9
       throw new Error "Invalid location"
 
+# Helper functions
 next_player = (current_player) ->
   if current_player is WHITE
     BLACK
@@ -73,8 +80,7 @@ board_init = (moves) ->
   board = new Board
   if moves.length is 0
     return board
-  for i in [1..moves.length]
-    move = moves[i - 1]
+  for move in moves
     player = next_player player
     throw new Error "Not empty location" unless board.play(player, null, move)
   board
