@@ -34,7 +34,7 @@ describe 'A board initialiser', ->
     board = board_init [5,1]
     board.turn.should.equal 3
     board.positions[4].should.equal WHITE
-    board.positions[0].should.equal BLACK
+    board.positions[0].should.equal BLACK 
   it 'should when given two plays in the same space throw an error', ->
     (-> board = board_init [1, 1]).should.throw "Not empty location"
 
