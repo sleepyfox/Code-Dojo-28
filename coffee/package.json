@@ -1,0 +1,24 @@
+{
+  "name": "three-mens-morris",
+  "version": "1.0.0",
+  "description": "A code kata example based upon the game Three Men's Morris",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --compilers coffee:coffee-script/register -bR spec test-*.coffee",
+    "lint": "coffeelint *.coffee",
+    "watch": "mocha --compilers coffee:coffee-script/register -bwR nyan test-*.coffee"
+  },
+  "author": "@sleepyfox",
+  "license": "CC-BY-4.0",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:sleepyfox/Code-Dojo-28.git"
+  },
+  "devDependencies": {
+    "coffee-script": "~1",
+    "mocha": "~2",
+    "chai": "~3",
+    "coffeelint": "~1"
+  },
+  "private": true
+}

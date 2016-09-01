@@ -1,0 +1,13 @@
+# Three Men's Morris
+
+I've used Node.js and CoffeeScript with the Mocha testing library and the Chai assertion library.
+
+First install the dependencies with:
+
+	npm install
+
+The tests can be run from the command-line with [mocha](http://visionmedia.github.io/mocha/):
+
+	npm test
+
+You can also use this with the **-w** flag to have mocha watch for file changes and re-run the tests (this obviates the need for watchr or similar tools).
