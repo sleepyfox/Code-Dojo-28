@@ -4,6 +4,8 @@ This is my worked example from the 28th meeting of the London Code Dojo. Feel fr
 
 You can find a [Node.js](https://nodejs.org/en/) and [CoffeeScript](http://coffeescript.org/) implementation of the kata in the [coffee](coffee) folder.
 
+There is a [Python](https://www.python.org/) starter test file in the [Python](python) folder.
+
 The source of the kata is the ancient game of Three Men's Morris, similar to Noughts and Crosses, of which you can find out more [here](http://en.wikipedia.org/wiki/Three_Men%27s_Morris).
 You can find out more about the London Code Dojo at our [homepage](http://www.meetup.com/London-Code-Dojo/).
 
