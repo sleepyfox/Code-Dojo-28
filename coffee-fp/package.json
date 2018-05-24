@@ -1,0 +1,20 @@
+{
+  "name": "three-mens-morris",
+  "version": "1.0.0",
+  "description": "A game rather like Noughts and Crosses",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --require coffeescript/register test_morris.coffee",
+    "watch": "while inotifywait -e close_write test_morris.coffee; do npm test; done"
+  },
+  "keywords": [
+    "TDD"
+  ],
+  "author": "@sleepyfox",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "coffeescript": "^2.3.0",
+    "mocha": "^5.1.1"
+  }
+}
